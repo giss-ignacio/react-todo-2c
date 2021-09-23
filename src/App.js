@@ -31,20 +31,24 @@ class App extends Component {
   }
 
    filtrarTodo(filtro) {
-    this.setState({tareasRender: this.state.tareas.filter(t => t.titulo.toLowerCase().includes(filtro.toLowerCase()))});
+     // paso recalcularContadores como callback para actualizar el total y unchecked
+     this.setState({tareasRender: this.state.tareas.filter(t => t.titulo.toLowerCase().includes(filtro.toLowerCase()))}, 
+      this.recalcularContadores);
   }
 
-  handleKeyPress(event) {
-    this.filtrarTodo(event.target.value);
+  recalcularContadores() {
+    this.handleUnchecked();
+    this.setState({total: this.state.tareasRender.length});
   }
 
-  handleUnchecked(isChecked) {
-    isChecked ?
-      this.setState({ unchecked: this.state.unchecked - 1 })
-    :
-      this.setState({ unchecked: this.state.unchecked + 1 });
+  handleOnChange(event) {
+    this.setState({filtro: event.target.value},
+      this.filtrarTodo(event.target.value));
   }
 
+  handleUnchecked() {
+    this.setState({ unchecked: this.state.tareasRender.filter(t => !t.check).length});
+  }
 
   render() {
     return (
@@ -52,7 +56,7 @@ class App extends Component {
         <h1 class="center title">TODO App</h1>
         <div class="flow-right controls">
           <span>Item count: <span id="item-count"> {this.state.total} </span></span>
-          <span>Filtrar: <input type="text" id="filtrar" onKeyUp={this.handleKeyPress.bind(this)}  placeholder='' /></span>
+          <span>Filtrar: <input type="text" id="filtrar" onChange={this.handleOnChange.bind(this)}  placeholder='' value={this.state.filtro} /></span>
           <span>Unchecked count: <span id="unchecked-count"> {this.state.unchecked} </span></span>
       </div>
 
