@@ -12,11 +12,11 @@ export default function Tarea(props) {
 
 return (
 <li>
-  <input class="todo-checkbox" type="checkbox" id="topping" name="topping" 
-    value="Paneer" checked={isChecked.get()} onChange={handleOnChange} />
-  <p style = {{color:'blue'}}>
+  <span>
+    <input class="todo-checkbox" type="checkbox" id="topping" name="topping"
+    value="Paneer" checked={isChecked.get()} onChange={handleOnChange} />&nbsp;
     {props.texto}
-  </p>
+  </span>
 </li>
 )
 }
